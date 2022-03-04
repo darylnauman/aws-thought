@@ -4,7 +4,7 @@ const router = express.Router();
 const AWS = require("aws-sdk");
 const awsConfig = {
     region: "us-east-2",
-    endpoint: "http://localhost:8000",
+    // endpoint: "http://localhost:8000",
 };
 AWS.config.update(awsConfig);
 const dynamodb = new AWS.DynamoDB.DocumentClient();
@@ -37,7 +37,7 @@ router.get("/users/:username", (req, res) => {
         ExpressionAttributeValues: {
             ":user": req.params.username,
         },
-        ProjectionExpression: "#th, #ca",
+        ProjectionExpression: "#th, #ca, #un", 
         ScanIndexForward: false,
     };
 
@@ -51,6 +51,7 @@ router.get("/users/:username", (req, res) => {
         } else {
             console.log("Query succeeded.");
             res.json(data.Items);
+            // console.log(data.Items)
         }
     });
 }); // closes the route for router.get(users/:username)
